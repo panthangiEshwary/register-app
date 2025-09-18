@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven' // Name of the Maven installation you just added
+    }
+
     environment {
         APP_NAME = "register-app-pipeline"
         RELEASE = "1.0.0"
@@ -26,7 +30,9 @@ pipeline {
         }
 
         stage("Build Application") {
-            steps { sh "mvn clean package -DskipTests" }
+            steps {
+                sh "mvn clean package -DskipTests"
+            }
         }
 
         stage("Build & Push Docker Image") {
