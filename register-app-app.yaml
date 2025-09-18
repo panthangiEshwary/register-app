@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/panthangiEshwary/register-app.git'
+    repoURL: 'https://github.com/panthangiEshwary/gitops-register-app.git'
     targetRevision: HEAD
-    path: 'cd'   # change this if your manifests are in a different folder
+    path: '.'   # manifests are in the root of this repo
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
