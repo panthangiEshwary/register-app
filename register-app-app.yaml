@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/panthangiEshwary/gitops-register-app.git'
     targetRevision: HEAD
-    path: '.'   # manifests are in the root of this repo
+    path: '.'  # root of the repo where deployment.yaml and service.yaml exist
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
