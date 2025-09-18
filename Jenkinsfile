@@ -9,14 +9,12 @@ pipeline {
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         DOCKERHUB_CREDENTIALS = "dockerhub"
         GITHUB_CREDENTIALS = "github"
-        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+        AWS_REGION = "us-east-1"
     }
 
     stages {
         stage("Cleanup Workspace") {
-            steps {
-                cleanWs()
-            }
+            steps { cleanWs() }
         }
 
         stage("Checkout from SCM") {
@@ -28,9 +26,7 @@ pipeline {
         }
 
         stage("Build Application") {
-            steps {
-                sh "mvn clean package -DskipTests"
-            }
+            steps { sh "mvn clean package -DskipTests" }
         }
 
         stage("Build & Push Docker Image") {
@@ -51,9 +47,8 @@ pipeline {
 
         stage("Trigger CD Pipeline") {
             steps {
-                script {
-                    sh "curl -v -k --user aakash:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'http://ec2-15-207-107-126.ap-south-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'"
-                }
+                build job: 'gitops-register-app-cd',
+                      parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_TAG}")]
             }
         }
     }
