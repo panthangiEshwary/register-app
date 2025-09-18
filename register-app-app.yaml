@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: register-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/panthangiEshwary/register-app.git'
+    targetRevision: HEAD
+    path: 'cd'   # change this if your manifests are in a different folder
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
